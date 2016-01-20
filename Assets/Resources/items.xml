@@ -1,0 +1,8 @@
+<ItemCollection>
+    <Items>
+        <Item name="Shovel">
+          <Damage>10</Damage>
+          <Durability>40</Durability>
+        </Item>
+    </Items>
+</ItemCollection>

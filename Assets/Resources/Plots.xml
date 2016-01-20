@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plot-collection>
+  <scene name="Demo">
+    <line>Hello</line>
+    <line>Welcome back</line>
+  </scene>
+</plot-collection>
