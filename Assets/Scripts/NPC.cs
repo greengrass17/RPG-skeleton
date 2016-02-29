@@ -1,25 +1,21 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections;
+using System.Collections.Generic;
+
+public delegate void OnDialogueEvent();
 
 public class NPC : ItemGeneral {
 
-    bool dialogueOn;
+    public event OnDialogueEvent OnDialogue;
 
-    CursorLockMode wantedMode;
-
-    void Update ()
-    {
-
-    }
+    public List<PlotItem> plots;
 
     public override void UseItem () {
-        Debug.Log("Talk, NPC");
-        dialogueOn = true;
-        PlotManager dialogue = GameObject.FindObjectOfType<PlotManager>();
-        dialogue.text.text = dialogue.plots[0];
-        GameObject textBox = GameObject.Find("Dialogue");
-        
+        if (OnDialogue != null)
+        {
+            OnDialogue();
+        }        
     }
 
 }

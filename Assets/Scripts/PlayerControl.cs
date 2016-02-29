@@ -25,6 +25,7 @@ public class PlayerControl : MonoBehaviour {
             RaycastHit2D hit = Physics2D.Raycast(mouseTarget, Vector2.zero);
             if (hit.collider && hit.transform.GetComponent<ItemGeneral>()) {
                 ItemGeneral item = hit.transform.GetComponent<ItemGeneral>();
+                /* TODO: Description should be handle by PlotManager */
                 if (item.text.text == item.description)
                 {
                     MovePlayer(mouseTarget);

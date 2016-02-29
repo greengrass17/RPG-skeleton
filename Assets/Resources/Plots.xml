@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Not in use atm -->
 <plot-collection>
-  <scene name="Demo">
-    <line>Hello</line>
-    <line>Welcome back</line>
-  </scene>
+  <character name="NPC1">
+    <situation id="1">
+      <npc>Pardon me?</npc>
+      <option id="1">Do you have A?</option>
+      <option id="2">Who is B?</option>
+      <option id="3">Nevermind</option>
+    </situation>
+    <situation id="1-1">
+      <npc>What can you trade with for A</npc>
+      <option id="1">I can tell you about B</option>
+      <option id="2">Your life</option>
+      <option id="3">Nevermind</option>
+    </situation>
+    <situation id="1-2">
+      <npc>You dont need to know about B</npc>
+      <option id="1">You are just hiding it</option>
+      <option id="2">I need B to help me with C</option>
+      <option id="3">Nevermind</option>
+    </situation>
+  </character>
 </plot-collection>
