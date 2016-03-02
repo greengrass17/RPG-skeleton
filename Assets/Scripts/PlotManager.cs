@@ -9,14 +9,18 @@ public class PlotManager : MonoBehaviour {
     private List<PlotItem> plots;
     private PlotItem activePlot;
     private Button[] optionButtons;
-    private Text[] lines;
+    private Text[] dialogueTexts;
+
+    public ItemPickable matchItem;
 
     // Use this for initialization
     void Start () {
-        /* TODO: Many NPCs */
-        plots = FindObjectOfType<NPC>().plots;
-        FindObjectOfType<NPC>().OnDialogue += setupPlot;
-        lines = GetComponentsInChildren<Text>();
+        NPC[] npcs = FindObjectsOfType<NPC>();
+        foreach (NPC npc in npcs)
+        {
+            npc.OnDialogue += setupPlot;
+        }
+        dialogueTexts = GetComponentsInChildren<Text>();
         optionButtons = GetComponentsInChildren<Button>();
         foreach (Button button in optionButtons)
         {
@@ -24,7 +28,38 @@ public class PlotManager : MonoBehaviour {
         }
 	}
 
-    private PlotItem getPlot(string id)
+    void resetPlot()
+    {
+        foreach (Text dialogue in dialogueTexts)
+        {
+            dialogue.text = null;
+        }
+        foreach (Button button in optionButtons)
+        {
+            button.gameObject.SetActive(false);
+        }
+    }
+
+    void setupPlot(NPC npc, string initPlot)
+    {
+        plots = npc.plots;
+        setupPlot(initPlot);
+    }
+
+    void setupPlot(string nextId)
+    {
+        /* TODO: dynamic ending */
+        if (nextId != "end")
+        {
+            PlotItem nextPlot = getNewPlot(nextId);
+            updatePlot(nextPlot);
+        } else
+        {
+            resetPlot();
+        }
+    }
+
+    private PlotItem getNewPlot(string id)
     {
         int i = 0;
         while (id != plots[i].id)
@@ -36,15 +71,10 @@ public class PlotManager : MonoBehaviour {
         else return plots[i];
     }
 
-    // Update is called once per frame
-    void Update () {
-	
-	}
-
     public string updatePlot(PlotItem newPlot) {
         activePlot = newPlot;
-        lines[0].text = newPlot.speaker + ": " + newPlot.plot.line;
-        for (int i = 1; i < lines.Length; i++)
+        dialogueTexts[0].text = newPlot.speaker + ": " + newPlot.plot.line;
+        for (int i = 1; i < dialogueTexts.Length; i++)
         {
             if (newPlot.options.Count >= i && newPlot.options[i - 1].line.Length > 0)
             {
@@ -53,7 +83,7 @@ public class PlotManager : MonoBehaviour {
                     UnityEventTools.AddStringPersistentListener(optionButtons[i - 1].onClick, setupPlot, newPlot.options[i - 1].next);
                 else
                     UnityEventTools.RegisterStringPersistentListener(optionButtons[i - 1].onClick, 0, setupPlot, newPlot.options[i - 1].next);
-                lines[i].text = newPlot.options[i - 1].line;
+                dialogueTexts[i].text = newPlot.options[i - 1].line;
             } else
             {
                 optionButtons[i - 1].gameObject.SetActive(false);
@@ -62,27 +92,11 @@ public class PlotManager : MonoBehaviour {
         return null;
     }
 
-    void setupPlot()
+    public void OnMouseDown()
     {
-        setupPlot("1");
-    }
-
-    void setupPlot(string nextId)
-    {
-        if (nextId != "end")
+        if (activePlot != null && activePlot.plot.next.Length > 0)
         {
-            PlotItem nextPlot = getPlot(nextId);
-            updatePlot(nextPlot);
-        }
-    }
-
-    /* TODO: Test*/
-    void OnMouseDown()
-    {
-        if (activePlot.plot.next.Length == 0)
-        {
-            PlotItem nextPlot = getPlot(activePlot.plot.next);
-            updatePlot(nextPlot);
+            setupPlot(activePlot.plot.next);
         }
     }
 }

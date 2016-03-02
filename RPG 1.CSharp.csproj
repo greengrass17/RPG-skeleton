@@ -76,6 +76,7 @@
     <Compile Include="Assets\Scripts\PlotItem.cs" />
     <Compile Include="Assets\Scripts\PlotLine.cs" />
     <Compile Include="Assets\Scripts\PlotManager.cs" />
+    <Compile Include="Assets\Scripts\Situation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\Plots.xml" />
