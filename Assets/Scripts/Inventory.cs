@@ -20,7 +20,7 @@ public class Inventory : MonoBehaviour {
         ItemNotPickable.OnItemUse += HandleOnItemUse;
     }
 
-    private void HandleOnItemPickUp (ItemPickable itemPicked) {
+    public void HandleOnItemPickUp (ItemPickable itemPicked) {
         InventorySlot emptySlot;
         int i = 0;
         do {

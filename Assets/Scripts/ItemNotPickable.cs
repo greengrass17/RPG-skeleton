@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public delegate void OnItemUseEvent();
@@ -18,6 +19,8 @@ public class ItemNotPickable : ItemGeneral {
         if (Inventory.activeItem == matchItem)
         {
             GetComponent<SpriteRenderer>().sprite = usedIcon;
+            /* TODO: Separate door item */
+            SceneManager.LoadScene("Indoor");
             OnItemUse();
         }
     }

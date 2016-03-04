@@ -7,11 +7,10 @@ using System.Collections.Generic;
 public class PlotManager : MonoBehaviour {
 
     private List<PlotItem> plots;
+    private List<Situation> situations;
     private PlotItem activePlot;
     private Button[] optionButtons;
     private Text[] dialogueTexts;
-
-    public ItemPickable matchItem;
 
     // Use this for initialization
     void Start () {
@@ -22,10 +21,7 @@ public class PlotManager : MonoBehaviour {
         }
         dialogueTexts = GetComponentsInChildren<Text>();
         optionButtons = GetComponentsInChildren<Button>();
-        foreach (Button button in optionButtons)
-        {
-            button.gameObject.SetActive(false);
-        }
+        resetPlot();
 	}
 
     void resetPlot()
@@ -43,18 +39,31 @@ public class PlotManager : MonoBehaviour {
     void setupPlot(NPC npc, string initPlot)
     {
         plots = npc.plots;
+        situations = npc.situations;
         setupPlot(initPlot);
     }
 
     void setupPlot(string nextId)
     {
         /* TODO: dynamic ending */
-        if (nextId != "end")
+        string[] next = nextId.Split(':');
+        if (next[0] != "end")
         {
             PlotItem nextPlot = getNewPlot(nextId);
             updatePlot(nextPlot);
         } else
         {
+            if (next.Length > 1)
+            {
+                int i = 0;
+                while (next[1] != situations[i].plotId)
+                {
+                    i++;
+                }
+                Inventory inventory = FindObjectOfType<Inventory>();
+                inventory.HandleOnItemPickUp(situations[1].matchItem);
+                Debug.Log(situations[i].matchItem.displayName);
+            }
             resetPlot();
         }
     }
